@@ -12,33 +12,36 @@
 
 <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @contact } %>
 
-<h1><%= Spree.t(:contact_us_title) %></h1>
+<span class="static-page-title without-selection"><%= Spree.t(:contact_us_title) %></span>
+
 <%= form_for @contact, :url => contacts_path, :html => { :novalidate => '' } do |f| %>
+
   <% if SpreeContactUs.require_name %>
-    <p>
-      <%= f.label :name %>
-      <span class="required">*</span><br/>
-      <%= f.text_field :name, class: 'required' %>
-    </p>
+    <div style="display: block; width: 100%;">
+      <!--<%= f.label :name %>-->
+      <% user_name = site_current_user_name%>
+      <span class="required without-selection" style="position: absolute; right: 25px; margin-top:10px;">*</span>
+      <%= f.text_field :name, :placeholder=>Spree.t("activemodel.attributes.contact_us/contact.name"), :value=>user_name, class: 'required text_field_decoration', :style=>'font-size: 1.3em;' %>
+    </div>
   <% end %>
+
   <p>
-    <%= f.label :email %>
-    <span class="required">*</span><br/>
-    <%= f.email_field :email, class: 'required email' %>
+    <%user_mail = site_current_user_email%>
+    <span class="required without-selection" style="position: absolute; right: 25px; margin-top:10px;">*</span>
+    <%= f.email_field :email, :placeholder=>Spree.t("activemodel.attributes.contact_us/contact.email"), :value=>user_mail, class: 'required email text_field_decoration', :style=>'font-size: 1.3em;' %>
   </p>
+
+  <!--Требуется тема-->
   <% if SpreeContactUs.require_subject %>
-    <p>
-      <%= f.label :subject %>
-      <span class="required">*</span><br/>
-      <%= f.text_field :subject, class: 'required' %>
-    </p>
+      <span class="required without-selection" style="position: absolute; right: 25px; margin-top:10px;">*</span>
+      <%= f.text_field :subject, :placeholder=>Spree.t("activemodel.attributes.contact_us/contact.subject"), class: 'required text_field_decoration', :style=>'font-size: 1.3em;' %>
   <% end %>
-  <p>
-    <%= f.label :message %>
-    <span class="required">*</span><br/>
-    <%= f.text_area :message, class: 'required' %>
-  </p>
-  <p>
-    <%= f.submit Spree.t(:submit), :alt => Spree.t(:submit), :id => 'contact_us_contact_submit', :title => Spree.t(:submit) %>
-  </p>
+
+  <span class="required without-selection" style="position: absolute; right: 25px; margin-top:10px;">*</span>
+  <%= f.text_area :message, :placeholder=>Spree.t("activemodel.attributes.contact_us/contact.message"), class: 'required', :style=>'font-size: 1.3em; width:100%; height:200px;' %>
+
+
+  <div class="review-submit-block" style="margin-top:15px">
+    <%= f.submit Spree.t(:submit), :alt => Spree.t(:submit), :id => 'contact_us_contact_submit', :class=>'review-submit-button', :style=>'float:none; border-radius: 5px;font-size:1.1em; width:200px; margin:auto; text-transform:uppercase;',:title => Spree.t(:submit) %>
+  </div>
 <% end %>
